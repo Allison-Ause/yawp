@@ -29,7 +29,8 @@ CREATE TABLE reviews (
 INSERT INTO users (email, passwordHash) VALUES
 ('polly@pocket.com', 'fakePasswordHash'),
 ('barbie@skipper.com', 'fakePasswordHash'),
-('kylo@ren.com', 'fakePasswordHash');
+('kylo@ren.com', 'fakePasswordHash'),
+('allison@works.com', '$2b$10$ppw7JtE6dIWepG7/a32TsO2icC6/SJX7O3jjzSlFK8zhL4LuYe5AG');
 
 INSERT INTO restaurants (name, cuisine) VALUES
 ('Tropicale', 'Colombian'),

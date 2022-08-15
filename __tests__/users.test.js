@@ -34,9 +34,15 @@ describe('users routes', () => {
       'Successfully Logged In With New Account!'
     );
   });
-  // it('#POST /users should login user if pre-existing', () => {
-  //   expect(res.status).toBe(200);
-  // });
+  it('#POST /users/sessions should login user if pre-existing', async () => {
+    const res = await request(app).post('/api/v1/users/sessions').send({
+      email: 'allison@works.com',
+      password: 'fakePasswordHash',
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toEqual('Welcome Back!');
+  });
   afterAll(async () => {
     await setup(pool);
     pool.end();
