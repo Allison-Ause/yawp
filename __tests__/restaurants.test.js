@@ -16,4 +16,24 @@ describe('restaurant routes', () => {
     await setup(pool);
     pool.end();
   });
+  it('/restaurants/:restId display rest.detail for authenticated users', async () => {
+    const testUser = {
+      email: 'test@test.com',
+      password: '1234password',
+    };
+
+    const agent = request.agent(app);
+    await agent.post('/api/v1/users').send(testUser);
+    console.log('AGENT', agent);
+    const res = await request(app).get('/api/v1/restaurants/1');
+    console.log('RES', res);
+
+    expect(res.status).toBe(200);
+    expect(res.body.name).toEqual('Tropicale');
+  });
+  it('/restaurants/:id gives 401 if not authenticated', async () => {
+    const res = await request(app).get('/api/v1/restaurants/1');
+    expect(res.status).toBe(401);
+    expect(res.body.message).toEqual('Sign in to view');
+  });
 });
