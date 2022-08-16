@@ -2,20 +2,6 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-// const UserService = require('../lib/services/UserService');
-
-// const registerAndLogin = async (userProps = {}) => {
-//   const password = userProps.password;
-//   const agent = request.agent(app);
-//   const user = await UserService.signUp({ ...userProps });
-
-//   const { email } = user;
-//   await agent.post('/api/v1/users').send({
-//     email,
-//     password,
-//   });
-//   return [agent, user];
-// };
 
 const testUser = {
   email: 'test@test.com',
@@ -26,7 +12,7 @@ describe('users routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('#POST /users should create a new user if none exists', async () => {
+  it.skip('#POST /users should create a new user if none exists', async () => {
     const res = await request(app).post('/api/v1/users').send(testUser);
 
     expect(res.status).toBe(200);
@@ -34,7 +20,7 @@ describe('users routes', () => {
       'Successfully Logged In With New Account!'
     );
   });
-  it('#POST /users/sessions should login user if pre-existing', async () => {
+  it.skip('#POST /users/sessions should login user if pre-existing', async () => {
     const res = await request(app).post('/api/v1/users/sessions').send({
       email: 'allison@works.com',
       password: 'fakePasswordHash',
@@ -43,7 +29,7 @@ describe('users routes', () => {
     expect(res.status).toBe(200);
     expect(res.body.message).toEqual('Welcome Back!');
   });
-  it('#GET /users displays list of users if admin', async () => {
+  it.skip('#GET /users displays list of users if admin', async () => {
     const adminUser = {
       email: 'admin',
       password: '1234password',
@@ -58,11 +44,11 @@ describe('users routes', () => {
     expect(res.body.length).toBe(5);
     expect(res.body[2].email).toEqual('kylo@ren.com');
   });
-  it('#GET /users displays 401 if not authenticated', async () => {
+  it.skip('#GET /users displays 401 if not authenticated', async () => {
     const res = await request(app).get('/api/v1/users');
     expect(res.status).toBe(401);
   });
-  it('#GET /users displays 403 if not authorized admin', async () => {
+  it.skip('#GET /users displays 403 if not authorized admin', async () => {
     const lowLevelUser = {
       email: 'Tommy@Loser.com',
       password: '1234password',
