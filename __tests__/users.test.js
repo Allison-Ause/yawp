@@ -2,20 +2,20 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const UserService = require('../lib/services/UserService');
+// const UserService = require('../lib/services/UserService');
 
-const registerAndLogin = async (userProps = {}) => {
-  const password = userProps.password ?? testUser.password;
-  const agent = request.apply.agent(app);
-  const user = await UserService.create({ ...testUser, ...userProps });
+// const registerAndLogin = async (userProps = {}) => {
+//   const password = userProps.password;
+//   const agent = request.agent(app);
+//   const user = await UserService.signUp({ ...userProps });
 
-  const { email } = user;
-  await agent.post('/api/v1/users/sessions').send({
-    email,
-    password,
-  });
-  return [agent, user];
-};
+//   const { email } = user;
+//   await agent.post('/api/v1/users').send({
+//     email,
+//     password,
+//   });
+//   return [agent, user];
+// };
 
 const testUser = {
   email: 'test@test.com',
@@ -42,6 +42,36 @@ describe('users routes', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toEqual('Welcome Back!');
+  });
+  it('#GET /users displays list of users if admin', async () => {
+    const adminUser = {
+      email: 'admin',
+      password: '1234password',
+    };
+
+    const agent = request.agent(app);
+
+    await agent.post('/api/v1/users').send(adminUser);
+    const res = await agent.get('/api/v1/users');
+
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBe(5);
+    expect(res.body[2].email).toEqual('kylo@ren.com');
+  });
+  it('#GET /users displays 401 if not authenticated', async () => {
+    const res = await request(app).get('/api/v1/users');
+    expect(res.status).toBe(401);
+  });
+  it('#GET /users displays 403 if not authorized admin', async () => {
+    const lowLevelUser = {
+      email: 'Tommy@Loser.com',
+      password: '1234password',
+    };
+
+    const agent = request.agent(app);
+    await agent.post('/api/v1/users').send(lowLevelUser);
+    const res = await agent.get('/api/v1/users');
+    expect(res.status).toBe(403);
   });
   afterAll(async () => {
     await setup(pool);
