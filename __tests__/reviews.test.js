@@ -29,8 +29,7 @@ describe('reviews routes', () => {
   });
   it('#DELETE /reviews/:id deletes review for review-owner', async () => {
     const agent = request.agent(app);
-    const user = await agent.post('/api/v1/users/sessions').send(testUser);
-    console.log('USER FROM TEST', user);
+    await agent.post('/api/v1/users/sessions').send(testUser);
 
     const res = await agent.delete('/api/v1/reviews/5');
     expect(res.status).toBe(200);
