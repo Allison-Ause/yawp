@@ -25,7 +25,7 @@ describe('restaurant routes', () => {
     const agent = request.agent(app);
     await agent.post('/api/v1/users').send(testUser);
     console.log('AGENT', agent);
-    const res = await request(app).get('/api/v1/restaurants/1');
+    const res = await agent.get('/api/v1/restaurants/1');
     console.log('RES', res.body);
 
     expect(res.status).toBe(200);
