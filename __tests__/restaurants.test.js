@@ -12,16 +12,12 @@ describe('restaurant routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('/restaurants display open access list of all restaurants', async () => {
+  it('#GET /restaurants display open access list of all restaurants', async () => {
     const res = await request(app).get('/api/v1/restaurants');
     expect(res.status).toBe(200);
     expect(res.body.length).toEqual(3);
   });
-  afterAll(async () => {
-    await setup(pool);
-    pool.end();
-  });
-  it('/restaurants/:restId display rest.detail for authenticated users', async () => {
+  it('#GET /restaurants/:restId display rest.detail for authenticated users', async () => {
     const agent = request.agent(app);
     await agent.post('/api/v1/users').send(testUser);
 
@@ -35,7 +31,7 @@ describe('restaurant routes', () => {
       reviews: expect.any(Array),
     });
   });
-  it('/restaurants/:id gives 401 if not authenticated', async () => {
+  it('#GET /restaurants/:id gives 401 if not authenticated', async () => {
     const res = await request(app).get('/api/v1/restaurants/1');
     expect(res.status).toBe(401);
     expect(res.body.message).toEqual('Sign in to view');
@@ -48,12 +44,10 @@ describe('restaurant routes', () => {
 
     const agent = request.agent(app);
     await agent.post('/api/v1/users').send(testUser);
-    console.log('AGENT', agent);
 
     const res = await agent
       .post('/api/v1/restaurants/1/reviews')
       .send(testReview);
-    console.log('RES', res.body);
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
@@ -62,5 +56,9 @@ describe('restaurant routes', () => {
       user_id: expect.any(String),
       restaurant_id: '1',
     });
+  });
+  afterAll(async () => {
+    await setup(pool);
+    pool.end();
   });
 });

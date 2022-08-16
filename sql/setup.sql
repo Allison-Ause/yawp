@@ -42,7 +42,7 @@ INSERT INTO reviews (rating, content, user_id, restaurant_id) VALUES
 (5, 'Totally cute atmosphere and incredibly authentic fare', 2, 1),
 (2, 'Cold pizza and mean waitstaff', 2, 2),
 (1, 'Uptight atmosphere; too bougie for comfort', 3, 2),
-(4, 'Gorgeous patio and ethically sourced meat', 3, 3),
+(4, 'Gorgeous patio and ethically sourced meat', 4, 3),
 (3, 'Too sweet cocktails but awesome cajun fries!', 1, 3);
 
 
