@@ -17,12 +17,8 @@ describe('restaurant routes', () => {
     expect(res.status).toBe(200);
     expect(res.body.length).toEqual(3);
   });
-  it('#GET /restaurants/:restId display rest.detail for authenticated users', async () => {
-    const agent = request.agent(app);
-    await agent.post('/api/v1/users').send(testUser);
-
-    const res = await agent.get('/api/v1/restaurants/1');
-
+  it('#GET /restaurants/:restId display open access detail & reviews for one restaurant', async () => {
+    const res = await request(app).get('/api/v1/restaurants/1');
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: '1',
@@ -31,15 +27,10 @@ describe('restaurant routes', () => {
       reviews: expect.any(Array),
     });
   });
-  it('#GET /restaurants/:id gives 401 if not authenticated', async () => {
-    const res = await request(app).get('/api/v1/restaurants/1');
-    expect(res.status).toBe(401);
-    expect(res.body.message).toEqual('Sign in to view');
-  });
   it('#POST /restaurants/:restId/reviews creates new review for authenticated users', async () => {
     const testReview = {
-      rating: 4,
-      content: 'I love this place!',
+      stars: 4,
+      detail: 'I love this place!',
     };
 
     const agent = request.agent(app);
