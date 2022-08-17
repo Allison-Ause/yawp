@@ -59,12 +59,9 @@ describe('users routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.status).toBe(403);
   });
-  it('#GET /users/profile displays user information and reviews', async () => {
-    const agent = request.agent(app);
-    await agent.post('/api/v1/users').send(testUser);
-
-    const res = await agent.get('/api/v1/users/profile');
-
+  it('#GET /users/profile displays all users information and reviews', async () => {
+    const res = await request(app).get('/api/v1/users/profile');
+    console.log('RES.BODY', res.body);
     expect(res.status).toBe(200);
     expect(res.body.length).toBe(5);
     expect(res.body[2].email).toEqual('kylo@ren.com');
