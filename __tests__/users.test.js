@@ -36,10 +36,9 @@ describe('users routes', () => {
     };
 
     const agent = request.agent(app);
-
     await agent.post('/api/v1/users').send(adminUser);
-    const res = await agent.get('/api/v1/users');
 
+    const res = await agent.get('/api/v1/users');
     expect(res.status).toBe(200);
     expect(res.body.length).toBe(5);
     expect(res.body[2].email).toEqual('kylo@ren.com');
@@ -59,12 +58,21 @@ describe('users routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.status).toBe(403);
   });
-  it('#GET /users/profile displays all users information and reviews', async () => {
-    const res = await request(app).get('/api/v1/users/profile');
-    console.log('RES.BODY', res.body);
+  it.only('#GET /users/profile displays single user information and reviews', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/v1/users/sessions').send({
+      email: 'allison@works.com',
+      password: 'fakePasswordHash',
+    });
+
+    const res = await agent.get('/api/v1/users/profile');
+
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(5);
-    expect(res.body[2].email).toEqual('kylo@ren.com');
+    expect(res.body).toEqual({
+      id: '4',
+      email: 'allison@works.com',
+      reviews: expect.any(Array),
+    });
   });
   afterAll(async () => {
     await setup(pool);

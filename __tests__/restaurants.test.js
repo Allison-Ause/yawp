@@ -12,12 +12,12 @@ describe('restaurant routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('#GET /restaurants display open access list of all restaurants', async () => {
+  it.skip('#GET /restaurants display open access list of all restaurants', async () => {
     const res = await request(app).get('/api/v1/restaurants');
     expect(res.status).toBe(200);
     expect(res.body.length).toEqual(3);
   });
-  it('#GET /restaurants/:restId display rest.detail for authenticated users', async () => {
+  it.skip('#GET /restaurants/:restId display rest.detail for authenticated users', async () => {
     const agent = request.agent(app);
     await agent.post('/api/v1/users').send(testUser);
 
@@ -31,12 +31,12 @@ describe('restaurant routes', () => {
       reviews: expect.any(Array),
     });
   });
-  it('#GET /restaurants/:id gives 401 if not authenticated', async () => {
+  it.skip('#GET /restaurants/:id gives 401 if not authenticated', async () => {
     const res = await request(app).get('/api/v1/restaurants/1');
     expect(res.status).toBe(401);
     expect(res.body.message).toEqual('Sign in to view');
   });
-  it('#POST /restaurants/:restId/reviews creates new review for authenticated users', async () => {
+  it.skip('#POST /restaurants/:restId/reviews creates new review for authenticated users', async () => {
     const testReview = {
       rating: 4,
       content: 'I love this place!',
@@ -55,6 +55,19 @@ describe('restaurant routes', () => {
       ...testReview,
       user_id: expect.any(String),
       restaurant_id: '1',
+    });
+  });
+  it.only('#GET /restaurants/:search?name= gives restaurants by name', async () => {
+    const res = await request(app).get(
+      '/api/v1/restaurants/search?name=Tropicale'
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: '1',
+      name: 'Tropicale',
+      cuisine: 'Colombian',
+      reviews: expect.any(Array),
     });
   });
   afterAll(async () => {
