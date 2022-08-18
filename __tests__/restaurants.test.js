@@ -52,7 +52,6 @@ describe('restaurant routes', () => {
     const res = await request(app).get(
       '/api/v1/restaurants/search?name=Tropicale'
     );
-    console.log('RES.BODY in TEST', res.body);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: '1',
