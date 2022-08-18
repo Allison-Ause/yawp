@@ -17,7 +17,7 @@ describe('reviews routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it.skip('#DELETE /reviews/:id deletes review for admin', async () => {
+  it('#DELETE /reviews/:id deletes review for admin', async () => {
     const agent = request.agent(app);
     await agent.post('/api/v1/users').send(adminUser);
 
@@ -27,7 +27,7 @@ describe('reviews routes', () => {
     const confirmRes = await agent.get('/api/v1/reviews/1');
     expect(confirmRes.status).toBe(404);
   });
-  it.skip('#DELETE /reviews/:id deletes review for review-owner', async () => {
+  it('#DELETE /reviews/:id deletes review for review-owner', async () => {
     const agent = request.agent(app);
     await agent.post('/api/v1/users/sessions').send(testUser);
 
@@ -37,7 +37,7 @@ describe('reviews routes', () => {
     const confirmRes = await agent.get('/api/v1/reviews/5');
     expect(confirmRes.status).toBe(404);
   });
-  it.skip('#DELETE /reviews/:id will not delete & gives 401 if not authenticated', async () => {
+  it('#DELETE /reviews/:id will not delete & gives 401 if not authenticated', async () => {
     const res = await request(app).delete('/api/v1/reviews/2');
     expect(res.status).toBe(401);
     expect(res.body.message).toEqual('Sign in to view');

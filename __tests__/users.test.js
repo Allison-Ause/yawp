@@ -58,7 +58,7 @@ describe('users routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.status).toBe(403);
   });
-  it.only('#GET /users/profile displays single user information and reviews', async () => {
+  it('#GET /users/profile displays single user information and reviews', async () => {
     const agent = request.agent(app);
     await agent.post('/api/v1/users/sessions').send({
       email: 'allison@works.com',

@@ -17,8 +17,8 @@ CREATE TABLE restaurants (
 
 CREATE TABLE reviews (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  rating SMALLINT CONSTRAINT five_star_scale CHECK(rating BETWEEN 1 AND 5),
-  content VARCHAR NOT NULL,
+  stars SMALLINT CONSTRAINT five_star_scale CHECK(stars BETWEEN 1 AND 5),
+  detail VARCHAR NOT NULL,
   user_id BIGINT,
   restaurant_id BIGINT,
   FOREIGN KEY (user_id) REFERENCES users(id),
@@ -37,7 +37,7 @@ INSERT INTO restaurants (name, cuisine) VALUES
 ('Nostrana', 'Italian'),
 ('Bar Bar', 'Americana');
 
-INSERT INTO reviews (rating, content, user_id, restaurant_id) VALUES
+INSERT INTO reviews (stars, detail, user_id, restaurant_id) VALUES
 (5, 'Delicious pinaepple pina coladas and a good price point!', 1, 1),
 (5, 'Totally cute atmosphere and incredibly authentic fare', 2, 1),
 (2, 'Cold pizza and mean waitstaff', 2, 2),
